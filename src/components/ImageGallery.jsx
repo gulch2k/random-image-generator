@@ -16,23 +16,25 @@ export default function ImageGallery() {
     setRandomImage(imageUrls[randomIndex]);
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop: handleDrop,
+    noClick: true,  // Prevents opening file dialog on click
+    noKeyboard: true,  // Prevents opening file dialog on space/enter keypress
   });
 
   return (
     <div>
-      <div
-        {...getRootProps()}
-        className={`dropzone ${isDragActive ? "active" : ""}`}
-      >
+      <div {...getRootProps()} className={`dropzone ${isDragActive ? "active" : ""}`}>
         <input {...getInputProps()} />
         {isDragActive ? (
           <p>Drop the files here...</p>
         ) : (
-          <p>Drag and drop files here or click to select files</p>
+          <p>Drag and drop files here or click the button to select files</p>
         )}
       </div>
+      <button type="button" onClick={open}>
+        Open File Dialog
+      </button>
       {randomImage && (
         <div className="image-container">
           <img src={randomImage} alt="Random" />
